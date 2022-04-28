@@ -4,32 +4,119 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use App\Models\Application;
+use App\Models\Faq;
 use App\Models\Adminuser;
-use App\Rules\AlphaNumCheck;
-use App\Rules\PhoneCheck;
-use App\Rules\MailCheck;
 use DB;
-use Mail;
-use Session;
 
 class IrisController extends Controller
 {
 
     public function faq()
     {
-        return view('faq');
+        $faq_list = Faq::orderBy('id', 'asc')->get();
+        return view('faq', [
+            'faq_list' => $faq_list,
+        ]);
     }
 
     public function faq_list()
     {
-        return view('faq_list');
+        $faq_list = Faq::orderBy('id', 'asc')->get();
+        return view('faq_list', [
+            'faq_list' => $faq_list,
+        ]);
     }
 
     public function faq_regist()
     {
         return view('faq_regist');
+    }
+
+    public function faq_store(Request $request)
+    {
+        $rules = [
+            'question' => ['required', 'max:50'],
+            'answer' => 'required',
+        ];
+
+        $messages = [
+            'question.required' => '質問を入力してください',
+            'question.required' => '質問は50文字以内で入力してください',
+            'answer.required' => '内容を入力してください',
+        ];
+
+        Validator::make($request->all(), $rules, $messages)->validate();
+
+        $faq = new Faq();
+
+        $request = $request->all();
+        $fill_data = [
+            'question' => $request['question'],
+            'answer' => $request['answer'],
+        ];
+
+        DB::beginTransaction();
+        try {
+            $faq->fill($fill_data)->save();
+            DB::commit();
+            return redirect()->to('admin/faq_list');
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+    }
+
+    public function faq_edit($id)
+    {
+        $faq = Faq::find($id);
+
+        return view('faq_edit', [
+            'faq' => $faq,
+        ]);
+    }
+
+    public function faq_update(Request $request)
+    {
+        $rules = [
+            'question' => ['required', 'max:50'],
+            'answer' => 'required',
+        ];
+
+        $messages = [
+            'question.required' => '質問を入力してください',
+            'question.required' => '質問は50文字以内で入力してください',
+            'answer.required' => '内容を入力してください',
+        ];
+
+        Validator::make($request->all(), $rules, $messages)->validate();
+
+        $faq = Faq::find($request['id']);
+        $request = $request->all();
+        $fill_data = [
+            'question' => $request['question'],
+            'answer' => $request['answer'],
+        ];
+
+        DB::beginTransaction();
+        try {
+            $faq->update($fill_data);
+
+            DB::commit();
+            return redirect()->to('admin/faq_list');
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+    }
+
+    public function faq_delete($id)
+    {
+        DB::beginTransaction();
+        try {
+            Faq::where('id', $id)->delete();
+            DB::commit();
+            return redirect()->route('admin.faq_list')->with('message', 'FAQを削除しました');
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
     }
 
     public function login_admin(Request $request)
@@ -51,5 +138,6 @@ class IrisController extends Controller
         session()->forget('login_id');
         return redirect('admin/login');
     }
+
 
 }

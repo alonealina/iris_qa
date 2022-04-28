@@ -20,43 +20,39 @@
                 <div class="page_title">Q&A管理ページ</div>
             </nav>
         </header>
-        <div class="create_button btn">
-            <a href="{{ route('admin.faq_regist') }}">Regist</a>
-        </div>
-        <div id="admin_content">
-            <div class="faq_list">
-                <div class="faq_list_column border_bottom_column">
-                    <div class="faq_list_q app_head">
-                        <div class="faq_item_name">質問</div>
-                    </div>
-                    <div class="faq_list_a app_head">
-                        <div class="faq_item_name">内容</div>
-                    </div>
-                    <div class="faq_list_btn app_head">
-                        <div class="faq_item_name"></div>
-                    </div>
-                </div>
-                @foreach($faq_list as $faq)
-                <div class="faq_list_column">
-                    <div class="faq_list_q app_item">
-                        <div class="faq_item_name">{{ $faq->question }}</div>
-                    </div>
-                    <div class="faq_list_a app_item">
-                        <div class="faq_item_name">{{ $faq->answer }}</div>
-                    </div>
-                    <div class="faq_list_btn app_head">
-                        <div class="faq_update_button">
-                            <a href="{{ route('admin.faq_edit', ['id' => $faq->id]) }}">編集</a>
-                        </div>
-                        <div class="faq_delete_button">
-                            <a href="{{ route('admin.faq_delete', ['id' => $faq->id]) }}" onclick="return confirm('本当に削除しますか？')">削除</a>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
+        <div class="content_div regist_div" style="margin-top: 110px;">
+            <div class="content_title">Q&A編集</div>
 
+            <form id="boxes" name="app_list_form" action="{{ route('admin.faq_update') }}" method="get">
+                @if($errors->has('title'))
+                <div class="comment_error">{{ $errors->first('title') }}</div>
+                @endif
+                @if($errors->has('content'))
+                <div class="comment_error">{{ $errors->first('content') }}</div>
+                @endif
+
+                @csrf
+                {{ Form::hidden('id', $faq->id) }}
+                <div class="flex_form_item">
+                    <div class="flex_form_title">質問</div>
+                    <div class="flex_form_content">
+                        {{ Form::text('question', old('question', $faq->question), ['class' => '', 'maxlength' => 20]) }}
+                    </div>
+                </div>
+
+                <div class="flex_form_item">
+                    <div class="flex_form_title">内容</div>
+                    <div class="flex_form_content">
+                        {{ Form::textarea('answer', old('answer', $faq->answer), ['class' => 'form-control notice_content_input', 'rows' => 10, 'maxlength' => 3000]) }}
+                    </div>
+                </div>
+
+                <div class="regist_button">
+                    <a href="#" onclick="clickFaqRegistButton()">更新</a>
+                </div>
+
+            </form>
+        </div>
     </body>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

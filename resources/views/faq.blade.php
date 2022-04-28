@@ -13,33 +13,14 @@
             <img src="../../img/logo.png" class="logo td1s none">
             <div class="form_name td2s none">Q＆A</div>
             <div class="faq_div td3s none">
+                @foreach($faq_list as $faq)
                 <div class="faq_content">
-                    <div class="faq_q">Q：口座開設に関するルール</div>
+                    <div class="faq_q">Q：{{ $faq->question }}</div>
                     <div class="faq_a">
-                    A：口座開設フォームから必要情報を入力頂くだけで口座開設が完了となり、<br>
-                    口座番号の発行が行われますが、口座開設に伴う必要書類は出金処理を行うまでに提出する必要があります。<br>
-                    また、口座開設に伴う必要書類は、身分証明証（運転免許証、パスポートなど）のコピー、<br>
-                    住所証明書（公共料金領収書、クレジットカード会社や携帯電話会社の請求書など）のコピーとなります。<br>
+                    A：{!! nl2br(e($faq->answer)) !!}
                     </div>
                 </div>
-                <div class="faq_content">
-                    <div class="faq_q">Q：口座開設に関するルール</div>
-                    <div class="faq_a">
-                    A：口座開設フォームから必要情報を入力頂くだけで口座開設が完了となり、<br>
-                    口座番号の発行が行われますが、口座開設に伴う必要書類は出金処理を行うまでに提出する必要があります。<br>
-                    また、口座開設に伴う必要書類は、身分証明証（運転免許証、パスポートなど）のコピー、<br>
-                    住所証明書（公共料金領収書、クレジットカード会社や携帯電話会社の請求書など）のコピーとなります。<br>
-                    </div>
-                </div>
-                <div class="faq_content">
-                    <div class="faq_q">Q：口座開設に関するルール</div>
-                    <div class="faq_a">
-                    A：口座開設フォームから必要情報を入力頂くだけで口座開設が完了となり、<br>
-                    口座番号の発行が行われますが、口座開設に伴う必要書類は出金処理を行うまでに提出する必要があります。<br>
-                    また、口座開設に伴う必要書類は、身分証明証（運転免許証、パスポートなど）のコピー、<br>
-                    住所証明書（公共料金領収書、クレジットカード会社や携帯電話会社の請求書など）のコピーとなります。<br>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
 

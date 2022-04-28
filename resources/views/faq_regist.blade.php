@@ -13,7 +13,7 @@
     <body>
         <header class="mb-4">
             <nav class="header_content">
-                <a href="{{ route('admin.app_list') }}"><img src="../../img/logo_header.png" class="logo_header"></a>
+                <a href="{{ route('admin.faq_list') }}"><img src="../../img/logo_header.png" class="logo_header"></a>
                 <div class="logout_button btn">
                     <a href="{{ route('admin.logout') }}">Logout</a>
                 </div>
@@ -35,19 +35,19 @@
                 <div class="flex_form_item">
                     <div class="flex_form_title">質問</div>
                     <div class="flex_form_content">
-                        {{ Form::text('title', old('title'), ['class' => '', 'maxlength' => 20]) }}
+                        {{ Form::text('question', old('question'), ['class' => '', 'maxlength' => 20]) }}
                     </div>
                 </div>
 
                 <div class="flex_form_item">
                     <div class="flex_form_title">内容</div>
                     <div class="flex_form_content">
-                        {{ Form::textarea('content', old('content'), ['class' => 'form-control notice_content_input', 'rows' => 10, 'maxlength' => 3000]) }}
+                        {{ Form::textarea('answer', old('answer'), ['class' => 'form-control notice_content_input', 'rows' => 10, 'maxlength' => 3000]) }}
                     </div>
                 </div>
 
                 <div class="regist_button">
-                    <a href="#" onclick="clickRegistButton()">登録</a>
+                    <a href="#" onclick="clickFaqRegistButton()">登録</a>
                 </div>
 
             </form>
